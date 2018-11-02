@@ -16,6 +16,13 @@ var player1Score = 0;
 var player2Score = 0;
 const WINNING_SCORE = 3;
 
+/* Difficulty levels - to be implemented
+const COMPUTER_EASY = 6;
+const COMPUTER_MEDIUM = 10;
+const COMPUTER_HARD = 14;
+*/
+
+var showingStartScreen = true;
 var showingWinScreen = false;
 
 var paddle1Y = 250;
@@ -41,6 +48,8 @@ function handleMouseClick(evt) {
 		player1Score = 0;
 		player2Score = 0;
 		showingWinScreen = false;
+	} else {
+		showingStartScreen = false;
 	}
 }
 
@@ -54,6 +63,7 @@ window.onload = function() {
 	moveEverything();
 	drawEverything();
 	}, 1000/framesPerSecond);
+
 
 	canvas.addEventListener('mousedown', handleMouseClick);
 
@@ -135,23 +145,34 @@ function drawNet() {
 	for(var i=0;i<canvas.height; i+=40) {
 		colorRect(canvas.width/2-1,i+10,2,20, 'white');
 	}
-
 }
+
 
 function drawEverything() {
 	// next line blanks out the screen with black
 	colorRect(0,0,canvas.width,canvas.height, 'black');
 
+	if(showingStartScreen) {
+		canvasContext.fillStyle = 'white';
+		canvasContext.font = "40pt Helvetica";
+		canvasContext.fillText("Welcome to PONG", 175, 200);
+
+		canvasContext.font = "20pt Helvetica";
+		canvasContext.fillText("Click to Start", 330, 300);
+		return;
+	}
+
 	if(showingWinScreen) {
 		canvasContext.fillStyle = 'white';
-
+		canvasContext.font = "40pt Helvetica";
 		if(player1Score >= WINNING_SCORE) {
-			canvasContext.fillText("You Won!", 350, 200);
+			canvasContext.fillText("You Won!", 300, 200);
 		} else if (player2Score >= WINNING_SCORE) {
-		canvasContext.fillText("You Lost!", 350, 200);
+		canvasContext.fillText("You Lost!", 300, 200);
 		}
 
-		canvasContext.fillText("click to continue", 350, 500);
+		canvasContext.font = "20pt Helvetica";
+		canvasContext.fillText("Click to Try Again", 300, 300);
 		return;
 	}
 
